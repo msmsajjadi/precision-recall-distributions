@@ -4,7 +4,7 @@ Official code for [Assessing Generative Models via Precision and Recall](https:/
 
 ## Usage
 ### Manually: Compute PRD from any embedding
-Example: you want to compare the precision and recall of a pair of generative models in some feature embedding of your liking (e.g., Inception activations).
+Example: you want to compare the precision and recall of a pair of generative models in some feature embedding to your liking (e.g., Inception activations).
 
 1. Take your test dataset and generate the same number of data points from each of your generative models to be evaluated.
 2. Compute feature embeddings of both real and generated datasets, e.g. `feats_real`, `feats_gen_1` and `feats_gen_2` as numpy arrays each of shape `[number_of_data_points, feature_dimensions]`.
