@@ -1,4 +1,5 @@
 # coding=utf-8
+# Taken from (default dpi changed from 150 to 300) https://github.com/google/compare_gan/blob/master/compare_gan/src/prd_score.py
 # Copyright 2018 Google LLC & Hwalsuk Lee.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -247,7 +248,7 @@ def prd_to_max_f_beta_pair(precision, recall, beta=8):
 
 
 def plot(precision_recall_pairs, labels=None, out_path=None,
-         legend_loc='lower left', dpi=150):
+         legend_loc='lower left', dpi=300):
   """Plots precision recall curves for distributions.
 
   Creates the PRD plot for the given data and stores the plot in a given path.
