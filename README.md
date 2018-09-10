@@ -50,7 +50,7 @@ prd.plot([prd_data_1, prd_data_2], ['model_1', 'model_2'])
 ## Further information
 External copyright for: [prd_score.py](https://github.com/google/compare_gan/blob/master/compare_gan/src/prd_score.py) [prd_score_test.py](https://github.com/google/compare_gan/blob/master/compare_gan/src/prd_score_test.py)
 [inception_network.py](https://github.com/google/compare_gan/blob/master/compare_gan/src/fid_score.py)<br>
-Remaining files: [Mehdi S. M. Sajjadi](http://msajjadi.com)<br>
+Copyright for remaining files: [Mehdi S. M. Sajjadi](http://msajjadi.com)<br>
 
 License for all files: [Apache License 2.0](LICENSE)
 
