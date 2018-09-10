@@ -48,7 +48,7 @@ def generate_inception_embedding(imgs, inception_path, layer_name='pool_3:0'):
 
 
 def load_or_generate_inception_embedding(directory, cache_dir, inception_path):
-    hash = hashlib.md5(directory).hexdigest()
+    hash = hashlib.md5(directory.encode('utf-8')).hexdigest()
     path = os.path.join(cache_dir, hash + '.npy')
     if os.path.exists(path):
         embeddings = np.load(path)
