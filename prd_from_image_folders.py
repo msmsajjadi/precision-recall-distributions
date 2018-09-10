@@ -32,12 +32,13 @@ parser.add_argument('--num_runs', type=int, default=10,
                          'PRD data')
 parser.add_argument('--plot_path', type=str, default=None,
                     help='path for final plot file (can be .png or .pdf)')
-parser.add_argument('--cache_dir', type=str,
-                    default='/tmp/prd_cache/',
+parser.add_argument('--cache_dir', type=str, default='/tmp/prd_cache/',
                     help='cache directory')
 parser.add_argument('--inception_path', type=str,
                     default='/tmp/prd_cache/inception.pb',
                     help='path to pre-trained Inception.pb file')
+parser.add_argument('--silent', dest='verbose', action='store_false',
+                    help='disable logging output')
 
 args = parser.parse_args()
 
@@ -71,16 +72,32 @@ def load_images_from_dir(directory, types=('png', 'jpg', 'bmp', 'gif')):
 
 
 if __name__ == '__main__':
+    if args.verbose:
+        print('computing inception embeddings for ' + args.real_dir)
     real_embeddings = load_or_generate_inception_embedding(
         args.real_dir, args.cache_dir, args.inception_path)
     prd_data = []
     for directory in args.fake_dir:
+        if args.verbose:
+            print('computing inception embeddings for ' + directory)
         fake_embeddings = load_or_generate_inception_embedding(
             directory, args.cache_dir, args.inception_path)
+        if args.verbose:
+            print('computing PRD')
         prd_data.append(prd.compute_prd_from_embedding(
             eval_data=fake_embeddings,
             ref_data=real_embeddings,
             num_clusters=args.num_clusters,
             num_angles=args.num_angles,
             num_runs=args.num_runs))
+    if args.verbose:
+        print('plotting results')
+
+    print()
+    f_beta_data = [prd.prd_to_max_f_beta_pair(precision, recall, beta=8)
+                   for precision, recall in prd_data]
+    print('F_8   F_1/8     model')
+    for directory, f_beta in zip(args.fake_dir, f_beta_data):
+        print('%.3f %.3f     %s' % (f_beta[0], f_beta[1], directory))
+
     prd.plot(prd_data, labels=args.fake_dir, out_path=args.plot_path)
