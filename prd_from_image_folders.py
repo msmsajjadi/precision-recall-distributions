@@ -37,8 +37,8 @@ parser.add_argument('--cache_dir', type=str, default='/tmp/prd_cache/',
 parser.add_argument('--inception_path', type=str,
                     default='/tmp/prd_cache/inception.pb',
                     help='path to pre-trained Inception.pb file')
-parser.add_argument('--verbose', type=bool, default=True,
-                    help='whether to print current status as the script runs')
+parser.add_argument('--silent', dest='verbose', action='store_false',
+                    help='disable logging output')
 
 args = parser.parse_args()
 
@@ -92,4 +92,12 @@ if __name__ == '__main__':
             num_runs=args.num_runs))
     if args.verbose:
         print('plotting results')
+
+    print()
+    f_beta_data = [prd.prd_to_max_f_beta_pair(precision, recall, beta=8)
+                   for precision, recall in prd_data]
+    print('F_8   F_1/8     model')
+    for directory, f_beta in zip(args.fake_dir, f_beta_data):
+        print('%.3f %.3f     %s' % (f_beta[0], f_beta[1], directory))
+
     prd.plot(prd_data, labels=args.fake_dir, out_path=args.plot_path)
