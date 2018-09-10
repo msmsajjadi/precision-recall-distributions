@@ -52,6 +52,6 @@ External copyright for: [prd_score.py](https://github.com/google/compare_gan/blo
 [inception_network.py](https://github.com/google/compare_gan/blob/master/compare_gan/src/fid_score.py)<br>
 Remaining files: [Mehdi S. M. Sajjadi](http://msajjadi.com)<br>
 
-License for all files: [Apache License 2.0](LICENCE)
+License for all files: [Apache License 2.0](LICENSE)
 
 For any questions, comments or help to get it to run, please don't hesitate to mail us: <msajjadi@tue.mpg.de>
