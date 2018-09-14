@@ -1,5 +1,12 @@
 # coding=utf-8
-# Taken from (default dpi changed from 150 to 300) https://github.com/google/compare_gan/blob/master/compare_gan/src/prd_score.py
+# Taken from:
+# https://github.com/google/compare_gan/blob/master/compare_gan/src/prd_score.py
+#
+# Changes:
+#   - default dpi changed from 150 to 300
+#   - added handling of cases where P = Q, where precision/recall may be
+#     just above 1, leading to errors for the f_beta computation
+#
 # Copyright 2018 Google LLC & Hwalsuk Lee.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -87,6 +94,14 @@ def compute_prd(eval_dist, ref_dist, num_angles=1001, epsilon=1e-10):
   # Compute precision and recall for all angles in one step via broadcasting
   precision = np.minimum(ref_dist_2d*slopes_2d, eval_dist_2d).sum(axis=1)
   recall = precision / slopes
+
+  # handle numerical instabilities leaing to precision/recall just above 1
+  max_val = max(np.max(precision), np.max(recall))
+  if max_val > 1.001:
+    raise ValueError('Detected value > 1.001, this should not happen.')
+  precision = np.clip(precision, 0, 1)
+  recall = np.clip(recall, 0, 1)
+
   return precision, recall
 
 
