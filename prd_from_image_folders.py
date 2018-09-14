@@ -18,10 +18,13 @@ parser = argparse.ArgumentParser(
     description='Assessing Generative Models via Precision and Recall',
     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-parser.add_argument('real_dir', type=str,
+parser.add_argument('--reference_dir', type=str, required=True,
                     help='directory containing reference images')
-parser.add_argument('fake_dir', type=str, nargs='+',
-                    help='directory containing images to be evaluated')
+parser.add_argument('--eval_dirs', type=str, nargs='+', required=True,
+                    help='directory or directories containing images to be '
+                    'evaluated')
+parser.add_argument('--eval_labels', type=str, nargs='+', required=True,
+                    help='labels for the eval_dirs (must have same size)')
 parser.add_argument('--num_clusters', type=int, default=20,
                     help='number of cluster centers to fit')
 parser.add_argument('--num_angles', type=int, default=1001,
@@ -72,23 +75,27 @@ def load_images_from_dir(directory, types=('png', 'jpg', 'bmp', 'gif')):
 
 
 if __name__ == '__main__':
-    real_dir = os.path.abspath(args.real_dir)
-    fake_dirs = [os.path.abspath(directory) for directory in args.fake_dir]
+    if len(args.eval_dirs) != len(args.eval_labels):
+        raise ValueError(
+            'Number of --eval_dirs must be equal to number of --eval_labels.')
+
+    reference_dir = os.path.abspath(args.reference_dir)
+    eval_dirs = [os.path.abspath(directory) for directory in args.eval_dirs]
 
     if args.verbose:
-        print('computing inception embeddings for ' + real_dir)
+        print('computing inception embeddings for ' + reference_dir)
     real_embeddings = load_or_generate_inception_embedding(
-        real_dir, args.cache_dir, args.inception_path)
+        reference_dir, args.cache_dir, args.inception_path)
     prd_data = []
-    for directory in fake_dirs:
+    for directory in eval_dirs:
         if args.verbose:
             print('computing inception embeddings for ' + directory)
-        fake_embeddings = load_or_generate_inception_embedding(
+        eval_embeddings = load_or_generate_inception_embedding(
             directory, args.cache_dir, args.inception_path)
         if args.verbose:
             print('computing PRD')
         prd_data.append(prd.compute_prd_from_embedding(
-            eval_data=fake_embeddings,
+            eval_data=eval_embeddings,
             ref_data=real_embeddings,
             num_clusters=args.num_clusters,
             num_angles=args.num_angles,
@@ -100,7 +107,7 @@ if __name__ == '__main__':
     f_beta_data = [prd.prd_to_max_f_beta_pair(precision, recall, beta=8)
                    for precision, recall in prd_data]
     print('F_8   F_1/8     model')
-    for directory, f_beta in zip(fake_dirs, f_beta_data):
+    for directory, f_beta in zip(eval_dirs, f_beta_data):
         print('%.3f %.3f     %s' % (f_beta[0], f_beta[1], directory))
 
-    prd.plot(prd_data, labels=fake_dirs, out_path=args.plot_path)
+    prd.plot(prd_data, labels=args.eval_labels, out_path=args.plot_path)
