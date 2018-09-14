@@ -72,12 +72,15 @@ def load_images_from_dir(directory, types=('png', 'jpg', 'bmp', 'gif')):
 
 
 if __name__ == '__main__':
+    real_dir = os.path.abspath(args.real_dir)
+    fake_dirs = [os.path.abspath(directory) for directory in args.fake_dir]
+
     if args.verbose:
-        print('computing inception embeddings for ' + args.real_dir)
+        print('computing inception embeddings for ' + real_dir)
     real_embeddings = load_or_generate_inception_embedding(
-        args.real_dir, args.cache_dir, args.inception_path)
+        real_dir, args.cache_dir, args.inception_path)
     prd_data = []
-    for directory in args.fake_dir:
+    for directory in fake_dirs:
         if args.verbose:
             print('computing inception embeddings for ' + directory)
         fake_embeddings = load_or_generate_inception_embedding(
@@ -97,7 +100,7 @@ if __name__ == '__main__':
     f_beta_data = [prd.prd_to_max_f_beta_pair(precision, recall, beta=8)
                    for precision, recall in prd_data]
     print('F_8   F_1/8     model')
-    for directory, f_beta in zip(args.fake_dir, f_beta_data):
+    for directory, f_beta in zip(fake_dirs, f_beta_data):
         print('%.3f %.3f     %s' % (f_beta[0], f_beta[1], directory))
 
-    prd.plot(prd_data, labels=args.fake_dir, out_path=args.plot_path)
+    prd.plot(prd_data, labels=fake_dirs, out_path=args.plot_path)
