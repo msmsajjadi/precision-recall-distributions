@@ -19,7 +19,7 @@ Example: you have a folder of images from your true distribution (e.g., `~/real_
 1. Download the pre-trained inception network from [here](https://owncloud.tuebingen.mpg.de/index.php/s/ef7QgkaX544nzcZ) and place it somewhere, e.g. `/tmp/prd_cache/inception.pb` (_Alternate link [here](http://download.tensorflow.org/models/image/imagenet/inception-2015-12-05.tgz). Note that this file needs to be unpacked._)
 2. In a shell, cd to the repository directory and run
 ```shell
-python prd_from_image_folders.py --inception_path=/tmp/prd_cache/inception.pb --reference_dir ~/real_images/ --eval_dirs ~/generated_images_1/ ~/generated_images_2/ --eval_labels model_1 model_2
+python prd_from_image_folders.py --inception_path /tmp/prd_cache/inception.pb --reference_dir ~/real_images/ --eval_dirs ~/generated_images_1/ ~/generated_images_2/ --eval_labels model_1 model_2
 ```
 
 For further customization, run `./prd_from_image_folders.py -h` to see the list of available options.
@@ -40,11 +40,10 @@ prd.plot([prd_data_1, prd_data_2], ['model_1', 'model_2'])
 ## BibTex citation
 ```
 @inproceedings{precision_recall_distributions,
-  title={{Assessing Generative Models via Precision and Recall}},
-  author={Sajjadi, Mehdi~S.~M. and Bachem, Olivier and Lu{\v c}i{\'c}, Mario and Bousquet, Olivier and Gelly, Sylvain},
+  title     = {{Assessing Generative Models via Precision and Recall}},
+  author    = {Sajjadi, Mehdi~S.~M. and Bachem, Olivier and Lu{\v c}i{\'c}, Mario and Bousquet, Olivier and Gelly, Sylvain},
   booktitle = {{Advances in Neural Information Processing Systems (NIPS)}},
-  year={2018},
-}
+  year      = {2018}}
 ```
 
 ## Further information
