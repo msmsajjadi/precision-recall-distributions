@@ -9,7 +9,7 @@ A list of required packages is provided in [requirements.txt](requirements.txt) 
 pip install -r requirements.txt
 ```
 
-If the embedding is computed manually ([_Manual: Compute PRD from any embedding_](#Manual: Compute PRD from any embedding)), a minimal set of required packaged may be used, see [requirements_minimal.txt](requirements_minimal.txt).
+If the embedding is computed manually, a minimal set of required packages may be used, see [requirements_minimal.txt](requirements_minimal.txt).
 
 ### Automatic: Compute PRD for folders of images on disk
 _Note that a GPU will significantly speed up the computation of the Inception embeddings, consider installing `pip install tensorflow-gpu`._
