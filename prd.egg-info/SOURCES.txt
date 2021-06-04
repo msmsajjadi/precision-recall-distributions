@@ -1,6 +1,0 @@
-README.md
-setup.py
-prd.egg-info/PKG-INFO
-prd.egg-info/SOURCES.txt
-prd.egg-info/dependency_links.txt
-prd.egg-info/top_level.txt
